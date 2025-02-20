@@ -26,7 +26,7 @@ export class Slider{
 
     makeSubscriptionForElement() {
         document.querySelector("#slider .left").addEventListener("click", this.onLeft.bind(this));
-        document.querySelector("#slider .right").addEventListener("click", onRight);
+        document.querySelector("#slider .right").addEventListener("click", this.onRight.bind(this));
         document.querySelector("#slider .slider-navigation").addEventListener("click", onDotClick)
         document.querySelector("#slider .start-sliding").addEventListener('click', startAutoSlides);
         document.querySelector("#slider .stop-sliding").addEventListener('click', stopAutoSlides);
@@ -50,11 +50,20 @@ export class Slider{
     }
 
     onLeft() {
-        currentSlide--;
-        if(currentSlide < 0){
-            currentSlide = images.length -1;
+        this.currentSlide--;
+        if(this.currentSlide < 0){
+            this.currentSlide = this.images.length -1;
         }
-        contentImg.style.transform = `translate(-${currentSlide * imgSlide.offsetWidth}px)`;
+        this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
         activeDot()
     }
+    onRight() {
+        this.currentSlide++;
+        if(this.currentSlide >= this.images.length){
+            this.currentSlide = 0;
+        }
+        this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
+        activeDot()
+    }
+
 }

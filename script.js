@@ -54,15 +54,6 @@ window.addEventListener('keydown', (event) => {
 
 
 
-function onRight() {
-    currentSlide++;
-    if(currentSlide >= images.length){
-        currentSlide = 0;
-    }
-    contentImg.style.transform = `translate(-${currentSlide * imgSlide.offsetWidth}px)`;
-    activeDot()
-}
-
 
 function onDotClick(event) {
     if (!event.target.classList.contains("dots")) {
