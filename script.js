@@ -1,35 +1,26 @@
-import {Slider} from "./Slider";
+import {Slider} from "./Slider.js";
 const images = [
     "img/slide-1.jpg",
     "img/slide-2.jpg",
     "img/slide-3.jpg",
 ];
 
-const slider = new Slider();
+const slider = new Slider(images);
 
-//let intervalId = null;
-//let currentSlide = 0;
+
+let intervalId = null;
 const minDistanceForSwipe = 100;
 let startTouchX = 0;
 let endTouchX = 0;
 let sliderTimer = 5;
 
 
-const left = document.querySelector("#slider .left");
-const right = document.querySelector("#slider .right");
-const contentImg = document.querySelector("#slider .content");
-generateImage()
-generateDots()
-const imgSlide = document.querySelector("#slider img");
-const startSlider = document.querySelector("#slider .start-sliding");
-const stopSlider = document.querySelector("#slider .stop-sliding");
-const slideNavigation = document.querySelector("#slider .slider-navigation");
 
-left.addEventListener("click", onLeft);
-right.addEventListener("click", onRight);
-slideNavigation.addEventListener("click", onDotClick)
-startSlider.addEventListener('click', startAutoSlides);
-stopSlider.addEventListener('click', stopAutoSlides);
+
+
+
+
+
 
 contentImg.addEventListener('touchstart', (event) => {
     startTouchX = event.touches[0].clientX;
@@ -63,25 +54,6 @@ window.addEventListener('keydown', (event) => {
 
 
 
-// function generateImage() {
-//     let imgHtml = '';
-//     images.forEach((image) => {
-//         imgHtml += `<img src=${image} alt="">`;
-//     })
-//     contentImg.innerHTML = imgHtml;
-// }
-
-
-function onLeft() {
-    currentSlide--;
-    if(currentSlide < 0){
-        currentSlide = images.length -1;
-    }
-    contentImg.style.transform = `translate(-${currentSlide * imgSlide.offsetWidth}px)`;
-    activeDot()
-}
-
-
 function onRight() {
     currentSlide++;
     if(currentSlide >= images.length){
@@ -89,16 +61,6 @@ function onRight() {
     }
     contentImg.style.transform = `translate(-${currentSlide * imgSlide.offsetWidth}px)`;
     activeDot()
-}
-
-
-function generateDots() {
-    let resultHtml = '';
-    images.forEach((image, index) => {
-        const activeClass = index === 0 ? "active" : "";
-        resultHtml += `<div class="dots ${activeClass}" data-dot="${index}"></div>`
-    })
-    document.querySelector('#slider .slider-navigation').innerHTML = resultHtml;
 }
 
 
