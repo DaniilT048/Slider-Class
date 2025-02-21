@@ -1,24 +1,28 @@
-export class Slider{
+export class Slider {
 
-    intervalId = null;
+
     minDistanceForSwipe = 100;
     startTouchX = 0;
     endTouchX = 0;
 
 
-    constructor(images, sliderTimer){
-        if(!Array.isArray(images)||!images.length){
+    constructor(images, sliderTimer, dots) {
+        if (!Array.isArray(images) || !images.length) {
             throw new Error("No images selected");
         }
         this.images = images;
-        this.currentSlide = images.length ;
+        this.currentSlide = images.length;
         this.sliderTimer = sliderTimer;
-        this.generateImage()
+        this.intervalId = null;
+
         this.generateDots()
+        this.generateImage()
+
 
         this.contentImg = document.querySelector("#slider .content");
         this.imgSlide = document.querySelector("#slider img");
-
+        this.autoSlidesButton = document.querySelector("#slider .auto-sliding");
+        this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         this.makeSubscriptionForElement()
     }
 
@@ -26,9 +30,8 @@ export class Slider{
     makeSubscriptionForElement() {
         document.querySelector("#slider .left").addEventListener("click", this.onLeft.bind(this));
         document.querySelector("#slider .right").addEventListener("click", this.onRight.bind(this));
-        document.querySelector("#slider .slider-navigation").addEventListener("click", this.onDotClick.bind(this))
-        document.querySelector("#slider .start-sliding").addEventListener('click', this.startAutoSlides.bind(this));
-        document.querySelector("#slider .stop-sliding").addEventListener('click', this.stopAutoSlides.bind(this));
+        document.querySelector("#slider .slider-navigation").addEventListener("click", this.onDotClick.bind(this));
+        document.querySelector("#slider .auto-sliding").addEventListener("click", this.startStopAutoSlides.bind(this));
     }
 
     generateImage() {
@@ -50,8 +53,8 @@ export class Slider{
 
     onLeft() {
         this.currentSlide--;
-        if(this.currentSlide < 0){
-            this.currentSlide = this.images.length -1;
+        if (this.currentSlide < 0) {
+            this.currentSlide = this.images.length - 1;
         }
         this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
         this.activeDot()
@@ -59,7 +62,7 @@ export class Slider{
 
     onRight() {
         this.currentSlide++;
-        if(this.currentSlide >= this.images.length){
+        if (this.currentSlide >= this.images.length) {
             this.currentSlide = 0;
         }
         this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
@@ -84,16 +87,16 @@ export class Slider{
             .classList.add("active");
     }
 
-    startAutoSlides() {
+    startStopAutoSlides() {
         if (!this.intervalId) {
             this.intervalId = setInterval(() => {
                 this.onRight();
-            }, this.sliderTimer * 1000)
+            }, this.sliderTimer * 1000);
+            this.autoSlidesButton.innerHTML = `<div class="sliding">&#9632;</div>`;
+        } else {
+            clearInterval(this.intervalId)
+            this.intervalId = null;
+            this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         }
-    }
-
-    stopAutoSlides() {
-        clearInterval(this.intervalId)
-        this.intervalId = null;
     }
 }
