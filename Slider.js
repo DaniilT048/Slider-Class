@@ -4,22 +4,26 @@ export class Slider {
     endTouchX = 0;
     intervalId = null;
 
-    constructor(images, sliderTimer, dots) {
+    constructor(sliderId, images, sliderTimer, dots) {
         if (!Array.isArray(images) || !images.length) {
             throw new Error("No images selected");
         }
+
+        this.sliderId = sliderId;
         this.images = images;
         this.currentSlide = images.length;
         this.sliderTimer = sliderTimer;
+        this.dots = true;
+        if (dots === true) {
+            this.generateDots()
+        }
 
-
-        this.generateDots()
         this.generateImage()
         this.slideSwipe()
 
-        this.contentImg = document.querySelector("#slider .content");
-        this.imgSlide = document.querySelector("#slider img");
-        this.autoSlidesButton = document.querySelector("#slider .auto-sliding");
+        this.contentImg = document.querySelector(`${this.sliderId} .content`);
+        this.imgSlide = document.querySelector(`${this.sliderId} img`);
+        this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
         this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         this.makeSubscriptionForElement()
         this.touchSliderEvents()
@@ -27,10 +31,10 @@ export class Slider {
 
 
     makeSubscriptionForElement() {
-        document.querySelector("#slider .left").addEventListener("click", this.onLeft.bind(this));
-        document.querySelector("#slider .right").addEventListener("click", this.onRight.bind(this));
-        document.querySelector("#slider .slider-navigation").addEventListener("click", this.onDotClick.bind(this));
-        document.querySelector("#slider .auto-sliding").addEventListener("click", this.startStopAutoSlides.bind(this));
+        document.querySelector(`${this.sliderId} .left`).addEventListener("click", this.onLeft.bind(this));
+        document.querySelector(`${this.sliderId} .right`).addEventListener("click", this.onRight.bind(this));
+        document.querySelector(`${this.sliderId} .slider-navigation`).addEventListener("click", this.onDotClick.bind(this));
+        document.querySelector(`${this.sliderId} .auto-sliding`).addEventListener("click", this.startStopAutoSlides.bind(this));
     }
 
     touchSliderEvents(){
@@ -63,8 +67,8 @@ export class Slider {
 
         window.addEventListener('keydown', (event) => {
             switch (event.key) {
-                case 'ArrowRight': onRight(); break;
-                case 'ArrowLeft': onLeft();
+                case 'ArrowRight': this.onRight(); break;
+                case 'ArrowLeft': this.onLeft();
             }
         })
     }
@@ -74,7 +78,7 @@ export class Slider {
         this.images.forEach((image) => {
             imgHtml += `<img src='${image}' alt="">`;
         })
-        document.querySelector('#slider .content').innerHTML = imgHtml;
+        document.querySelector(`${this.sliderId} .content`).innerHTML = imgHtml;
     }
 
     generateDots() {
@@ -83,7 +87,7 @@ export class Slider {
             const activeClass = index === 0 ? "active" : "";
             resultHtml += `<div class="dots ${activeClass}" data-dot="${index}"></div>`
         })
-        document.querySelector('#slider .slider-navigation').innerHTML = resultHtml;
+        document.querySelector(`${this.sliderId} .slider-navigation`).innerHTML = resultHtml;
     }
 
     onLeft() {
@@ -114,13 +118,14 @@ export class Slider {
     }
 
     activeDot() {
-        const activeClass = document.querySelector("#slider .active");
+        const activeClass = document.querySelector(`${this.sliderId} .active`);
         if (activeClass) {
             activeClass.classList.remove("active");
         }
-        document.querySelector(`#slider div[data-dot='${this.currentSlide}']`)
+        document.querySelector(`${this.sliderId} div[data-dot='${this.currentSlide}']`)
             .classList.add("active");
-    }
+        }
+
 
     startStopAutoSlides() {
         if (!this.intervalId) {
