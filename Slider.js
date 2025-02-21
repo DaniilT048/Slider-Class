@@ -4,7 +4,7 @@ export class Slider {
     endTouchX = 0;
     intervalId = null;
 
-    constructor(sliderId, images, sliderTimer, dots) {
+    constructor(sliderId, images, sliderTimer, isDotsHidden = false) {
         if (!Array.isArray(images) || !images.length) {
             throw new Error("No images selected");
         }
@@ -13,8 +13,8 @@ export class Slider {
         this.images = images;
         this.currentSlide = images.length;
         this.sliderTimer = sliderTimer;
-        this.dots = true;
-        if (dots === true) {
+        this.isDotsHidden = isDotsHidden;
+        if (!this.isDotsHidden) {
             this.generateDots()
         }
 
@@ -118,17 +118,17 @@ export class Slider {
     }
 
     activeDot() {
-        if (this.dots) {
+        if (this.isDotsHidden) {
+            return;
+        }
         const activeClass = document.querySelector(`${this.sliderId} .active`);
         if (activeClass) {
             activeClass.classList.remove("active");
         }
         document.querySelector(`${this.sliderId} div[data-dot='${this.currentSlide}']`)
             .classList.add("active");
-        }else {
-            console.log('dots is disabled');
         }
-        }
+
 
     startStopAutoSlides() {
         if (!this.intervalId) {
