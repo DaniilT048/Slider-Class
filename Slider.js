@@ -118,14 +118,17 @@ export class Slider {
     }
 
     activeDot() {
+        if (this.dots) {
         const activeClass = document.querySelector(`${this.sliderId} .active`);
         if (activeClass) {
             activeClass.classList.remove("active");
         }
         document.querySelector(`${this.sliderId} div[data-dot='${this.currentSlide}']`)
             .classList.add("active");
+        }else {
+            console.log('dots is disabled');
         }
-
+        }
 
     startStopAutoSlides() {
         if (!this.intervalId) {
