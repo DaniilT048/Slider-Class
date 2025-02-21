@@ -1,10 +1,8 @@
 export class Slider {
-
-
     minDistanceForSwipe = 100;
     startTouchX = 0;
     endTouchX = 0;
-
+    intervalId = null;
 
     constructor(images, sliderTimer, dots) {
         if (!Array.isArray(images) || !images.length) {
@@ -13,17 +11,18 @@ export class Slider {
         this.images = images;
         this.currentSlide = images.length;
         this.sliderTimer = sliderTimer;
-        this.intervalId = null;
+
 
         this.generateDots()
         this.generateImage()
-
+        this.slideSwipe()
 
         this.contentImg = document.querySelector("#slider .content");
         this.imgSlide = document.querySelector("#slider img");
         this.autoSlidesButton = document.querySelector("#slider .auto-sliding");
         this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         this.makeSubscriptionForElement()
+        this.touchSliderEvents()
     }
 
 
@@ -32,6 +31,42 @@ export class Slider {
         document.querySelector("#slider .right").addEventListener("click", this.onRight.bind(this));
         document.querySelector("#slider .slider-navigation").addEventListener("click", this.onDotClick.bind(this));
         document.querySelector("#slider .auto-sliding").addEventListener("click", this.startStopAutoSlides.bind(this));
+    }
+
+    touchSliderEvents(){
+        this.contentImg.addEventListener('touchstart', (event) => {
+            this.startTouchX = event.touches[0].clientX;
+        }, {passive: false});
+
+
+        this.contentImg.addEventListener('touchend', (event) => {
+            this.endTouchX = event.changedTouches[0].clientX;
+            this.slideSwipe();
+        });
+
+
+        this.contentImg.addEventListener('mousedown', (event) => {
+            this.startTouchX = event.clientX;
+        })
+
+
+        this.contentImg.addEventListener('mouseup', (event) => {
+            this.endTouchX = event.clientX;
+            this.slideSwipe();
+        })
+
+
+        document.querySelectorAll('img').forEach(img => {
+            img.ondragstart = () => false;    // block dragging of img
+        })
+
+
+        window.addEventListener('keydown', (event) => {
+            switch (event.key) {
+                case 'ArrowRight': onRight(); break;
+                case 'ArrowLeft': onLeft();
+            }
+        })
     }
 
     generateImage() {
@@ -97,6 +132,13 @@ export class Slider {
             clearInterval(this.intervalId)
             this.intervalId = null;
             this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
+        }
+    }
+    slideSwipe(){
+        if (this.endTouchX - this.startTouchX >= this.minDistanceForSwipe ) {
+            this.onLeft()
+        }else if (this.startTouchX - this.endTouchX >= this.minDistanceForSwipe) {
+            this.onRight()
         }
     }
 }

@@ -24,19 +24,23 @@ let endTouchX = 0;
 //     startTouchX = event.touches[0].clientX;
 // }, {passive: false});
 //
+//
 // contentImg.addEventListener('touchend', (event) => {
 //     endTouchX = event.changedTouches[0].clientX;
 //     slideSwipe();
 // });
 //
+//
 // contentImg.addEventListener('mousedown', (event) => {
 //     startTouchX = event.clientX;
 // })
+//
 //
 // contentImg.addEventListener('mouseup', (event) => {
 //     endTouchX = event.clientX;
 //     slideSwipe();
 // })
+//
 //
 // document.querySelectorAll('img').forEach(img => {
 //     img.ondragstart = () => false;    // block dragging of img
@@ -49,13 +53,6 @@ let endTouchX = 0;
 //         case 'ArrowLeft': onLeft();
 //     }
 // })
-//
-//
-//
-//
-//
-//
-//
 //
 //
 // function slideSwipe(){
