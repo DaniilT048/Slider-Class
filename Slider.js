@@ -4,7 +4,7 @@ export class Slider {
     endTouchX = 0;
     intervalId = null;
 
-    constructor(sliderId, images, sliderTimer, isDotsHidden = false) {
+    constructor(sliderId, images, sliderTimer, isDotsHidden = false, isAutoSlidesHidden = false) {
         if (!Array.isArray(images) || !images.length) {
             throw new Error("No images selected");
         }
@@ -23,8 +23,13 @@ export class Slider {
 
         this.contentImg = document.querySelector(`${this.sliderId} .content`);
         this.imgSlide = document.querySelector(`${this.sliderId} img`);
-        this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
-        this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
+
+        this.isAutoSlidesHidden = isAutoSlidesHidden;
+        if(!this.isAutoSlidesHidden) {
+            this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
+            this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
+        }
+
         this.makeSubscriptionForElement()
         this.touchSliderEvents()
     }
@@ -35,6 +40,7 @@ export class Slider {
         document.querySelector(`${this.sliderId} .right`).addEventListener("click", this.onRight.bind(this));
         document.querySelector(`${this.sliderId} .slider-navigation`).addEventListener("click", this.onDotClick.bind(this));
         document.querySelector(`${this.sliderId} .auto-sliding`).addEventListener("click", this.startStopAutoSlides.bind(this));
+
     }
 
     touchSliderEvents(){
@@ -142,6 +148,8 @@ export class Slider {
             this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         }
     }
+
+
     slideSwipe(){
         if (this.endTouchX - this.startTouchX >= this.minDistanceForSwipe ) {
             this.onLeft()

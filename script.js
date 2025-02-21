@@ -11,5 +11,5 @@ const imagesWhite = [
     "img/sliderTwo (3).jpg",
 ]
 
-const sliderFirst = new Slider('#slider', images, 2, false);
-const slider = new Slider('#slider-white', imagesWhite, 2, true);
+const sliderFirst = new Slider('#slider', images, 2, false, false);
+const slider = new Slider('#slider-white', imagesWhite, 2, true, true);
