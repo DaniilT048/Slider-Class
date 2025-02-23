@@ -4,7 +4,7 @@ export class Slider {
     endTouchX = 0;
     intervalId = null;
 
-    constructor(sliderId, images, sliderTimer, isDotsHidden = false, isAutoSlidesHidden = false) {
+    constructor(sliderId, images, sliderTimer = 1, isDotsHidden = false, isAutoSlidesButtonHidden = false) {
         if (!Array.isArray(images) || !images.length) {
             throw new Error("No images selected");
         }
@@ -14,6 +14,8 @@ export class Slider {
         this.currentSlide = images.length;
         this.sliderTimer = sliderTimer;
         this.isDotsHidden = isDotsHidden;
+        this.isAutoSlidesButtonHidden = isAutoSlidesButtonHidden;
+
         if (!this.isDotsHidden) {
             this.generateDots()
         }
@@ -21,17 +23,13 @@ export class Slider {
         this.generateImage()
         this.slideSwipe()
 
-        this.contentImg = document.querySelector(`${this.sliderId} .content`);
-        this.imgSlide = document.querySelector(`${this.sliderId} img`);
 
-        this.isAutoSlidesHidden = isAutoSlidesHidden;
-        if(!this.isAutoSlidesHidden) {
-            this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
-            this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
-        }
+
+
 
         this.makeSubscriptionForElement()
         this.touchSliderEvents()
+        this.autoSlidesButtons()
     }
 
 
@@ -40,7 +38,17 @@ export class Slider {
         document.querySelector(`${this.sliderId} .right`).addEventListener("click", this.onRight.bind(this));
         document.querySelector(`${this.sliderId} .slider-navigation`).addEventListener("click", this.onDotClick.bind(this));
         document.querySelector(`${this.sliderId} .auto-sliding`).addEventListener("click", this.startStopAutoSlides.bind(this));
+        this.contentImg = document.querySelector(`${this.sliderId} .content`);
+        this.imgSlide = document.querySelector(`${this.sliderId} img`);
 
+    }
+
+
+    autoSlidesButtons(){
+        if(!this.isAutoSlidesButtonHidden) {
+            this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
+            this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
+        }
     }
 
     touchSliderEvents(){
