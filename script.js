@@ -11,5 +11,18 @@ const imagesWhite = [
     "img/sliderTwo (3).jpg",
 ]
 
-const sliderFirst = new Slider('#slider', images, 2, false, false);
-const slider = new Slider('#slider-white', imagesWhite, 2, true, true);
+const sliderFirst = new Slider({
+    sliderId: 'slider',
+    images: images,
+    sliderTimer: 3,
+    isDotsHidden: false,
+    isAutoSlidesButtonHidden: false,
+    })
+
+const slider = new Slider({
+    sliderId: 'slider-white',
+    images: imagesWhite,
+    sliderTimer: 1,
+    isDotsHidden: true,
+    isAutoSlidesButtonHidden: true,
+});

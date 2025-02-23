@@ -4,17 +4,35 @@ export class Slider {
     endTouchX = 0;
     intervalId = null;
 
-    constructor(sliderId, images, sliderTimer = 1, isDotsHidden = false, isAutoSlidesButtonHidden = false) {
-        if (!Array.isArray(images) || !images.length) {
+    constructor(settings) {
+        if (!Array.isArray(settings.images) || !settings.images.length) {
             throw new Error("No images selected");
         }
 
-        this.sliderId = sliderId;
-        this.images = images;
-        this.currentSlide = images.length;
-        this.sliderTimer = sliderTimer;
-        this.isDotsHidden = isDotsHidden;
-        this.isAutoSlidesButtonHidden = isAutoSlidesButtonHidden;
+        if(!settings.sliderId) {
+            throw new Error("Slider id is not found");
+        }
+
+       const defaultSettings = {
+            sliderId: '',
+            images: [],
+            sliderTimer: 1,
+            isDotsHidden: false,
+            isAutoSlidesButtonHidden: false,
+       }
+
+       const options ={
+           ...defaultSettings,
+           ...settings,
+       }
+
+
+        this.sliderId = `#${options.sliderId}`;
+        this.images = options.images;
+        this.currentSlide = options.images.length;
+        this.sliderTimer = options.sliderTimer;
+        this.isDotsHidden = options.isDotsHidden;
+        this.isAutoSlidesButtonHidden = options.isAutoSlidesButtonHidden;
 
         if (!this.isDotsHidden) {
             this.generateDots()
@@ -31,7 +49,6 @@ export class Slider {
         this.touchSliderEvents()
         this.autoSlidesButtons()
     }
-
 
     makeSubscriptionForElement() {
         document.querySelector(`${this.sliderId} .left`).addEventListener("click", this.onLeft.bind(this));
