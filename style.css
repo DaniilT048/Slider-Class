@@ -5,7 +5,6 @@
 .slider {
     display: grid;
     grid-template-columns: 10% 1fr 10%;
-    background: linear-gradient(to bottom right, blue, yellow);
     max-width: 800px;
 }
 

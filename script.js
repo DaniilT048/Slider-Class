@@ -25,4 +25,5 @@ const slider = new Slider({
     sliderTimer: 1,
     isDotsHidden: true,
     isAutoSlidesButtonHidden: true,
+    primaryColor: '#2F4F4F',
 });

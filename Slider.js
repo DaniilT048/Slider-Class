@@ -19,6 +19,7 @@ export class Slider {
             sliderTimer: 1,
             isDotsHidden: false,
             isAutoSlidesButtonHidden: false,
+            primaryColor: '#008B8B',
        }
 
        const options ={
@@ -33,17 +34,16 @@ export class Slider {
         this.sliderTimer = options.sliderTimer;
         this.isDotsHidden = options.isDotsHidden;
         this.isAutoSlidesButtonHidden = options.isAutoSlidesButtonHidden;
+        this.primaryColor = options.primaryColor;
+        this.buttonSliderColor = options.buttonSliderColor;
 
         if (!this.isDotsHidden) {
             this.generateDots()
         }
 
+        this.sliderColor()
         this.generateImage()
         this.slideSwipe()
-
-
-
-
 
         this.makeSubscriptionForElement()
         this.touchSliderEvents()
@@ -181,5 +181,9 @@ export class Slider {
         }else if (this.startTouchX - this.endTouchX >= this.minDistanceForSwipe) {
             this.onRight()
         }
+    }
+
+    sliderColor() {
+        document.querySelector(`${this.sliderId}.slider`).style.background = this.primaryColor;
     }
 }
