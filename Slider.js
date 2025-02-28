@@ -41,13 +41,13 @@ export class Slider {
             this.generateDots()
         }
 
-        this.sliderColor()
+        this.setSliderColor()
         this.generateImage()
         this.slideSwipe()
 
         this.makeSubscriptionForElement()
-        this.touchSliderEvents()
-        this.autoSlidesButtons()
+        this.initTouchSliderEvents()
+        this.initAutoSlideButton()
     }
 
     makeSubscriptionForElement() {
@@ -61,14 +61,14 @@ export class Slider {
     }
 
 
-    autoSlidesButtons(){
+    initAutoSlideButton(){
         if(!this.isAutoSlidesButtonHidden) {
             this.autoSlidesButton = document.querySelector(`${this.sliderId} .auto-sliding`);
             this.autoSlidesButton.innerHTML = `<div class="sliding">&#9658;</div>`;
         }
     }
 
-    touchSliderEvents(){
+    initTouchSliderEvents(){
         this.contentImg.addEventListener('touchstart', (event) => {
             this.startTouchX = event.touches[0].clientX;
         }, {passive: false});
@@ -127,7 +127,7 @@ export class Slider {
             this.currentSlide = this.images.length - 1;
         }
         this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
-        this.activeDot()
+        this.updateActiveDot()
     }
 
     onRight() {
@@ -136,7 +136,7 @@ export class Slider {
             this.currentSlide = 0;
         }
         this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
-        this.activeDot()
+        this.updateActiveDot()
     }
 
     onDotClick(event) {
@@ -145,10 +145,10 @@ export class Slider {
         }
         this.currentSlide = event.target.dataset.dot;
         this.contentImg.style.transform = `translate(-${this.currentSlide * this.imgSlide.offsetWidth}px)`;
-        this.activeDot()
+        this.updateActiveDot()
     }
 
-    activeDot() {
+    updateActiveDot() {
         if (this.isDotsHidden) {
             return;
         }
@@ -183,7 +183,7 @@ export class Slider {
         }
     }
 
-    sliderColor() {
+    setSliderColor() {
         document.querySelector(`${this.sliderId}.slider`).style.background = this.primaryColor;
     }
 }
